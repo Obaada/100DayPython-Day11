@@ -16,7 +16,82 @@
 ## The cards in the list have equal probability of being drawn.
 ## Cards are not removed from the deck as they are drawn.
 ## The computer is the dealer.
-decks = [11,2,3,4,5,6,7,8,9,10,10,10,10]
+import random 
+from art import logo
+import os
+def deal_cards():
+  cards = [11,2,3,4,5,6,7,8,9,10,10,10,10]
+  card = random.choice(cards)
+  return card
+
+def calculate_score(cards):
+  Score = sum(cards)
+  if Score == 21 and len(cards) == 2:
+    return 0
+  if 11 in cards and Score > 21:
+    cards.remove(11)
+    cards.append(1)
+  return sum(cards)
+  
+def compare(User_Score, Computer_Score):
+  if User_Score > 21 and Computer_Score > 21:
+    print("You lost! You went over 21!")
+  if Computer_Score == 0:
+    print("You lost! Opponent has a blackjack!")
+  elif User_Score == 0: 
+    print("You won! You have a blackjack!")
+  elif User_Score > 21:
+    print("You lost! You went over 21!")
+  elif Computer_Score > 21:
+    print("You won! Opponent went over 21!")
+  elif Computer_Score == User_Score:
+    print("It is a draw!")
+  elif Computer_Score > User_Score:
+    print("You lost!")
+  else:
+    print("You won!")
+
+def PlayGame():
+  print(logo)
+  User_cards = [deal_cards(), deal_cards()]
+  Computer_Cards = [deal_cards() , deal_cards()]
+  
+  
+  KeepPlaying = True
+  while KeepPlaying:
+    User_Score = calculate_score(User_cards)
+    Computer_Score = calculate_score(Computer_Cards)
+    print(f"Your cards: {User_cards}, final score: {User_Score}")
+    print(f"Computer's first card: {Computer_Cards[0]}")
+
+    if User_Score == 0 or Computer_Score == 0 or User_Score > 21:
+      KeepPlaying= False
+    else:
+      Play = input("Type 'y' to get another card, type 'n' to pass:")
+      
+      if Play == "n":
+        KeepPlaying = False
+  
+      else:
+        User_cards.append(deal_cards())
+
+  while calculate_score(Computer_Cards) !=0 and calculate_score(Computer_Cards) < 17:
+    Computer_Cards.append(deal_cards())
+    Computer_Score = sum(Computer_Cards)
+
+  print(f"   Your final hand: {User_cards}, final score: {calculate_score(User_cards)}")
+  print(f"   Computer's final hand: {Computer_Cards}, final score: {calculate_score(Computer_Cards)}")
+  
+  compare(calculate_score(User_cards), calculate_score(Computer_Cards))
+  
+while input("Do you want to play a game of Blackjack? Type 'y' or 'n':") == "y":
+  print("TEST")
+  os.system('clear')
+  print("TEST")
+  PlayGame()
+  
+    
+    # Your_cards.append(random.choice(cards))
 ##################### Hints #####################
 
 #Hint 1: Go to this website and try out the Blackjack game: 
